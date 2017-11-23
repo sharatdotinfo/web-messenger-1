@@ -2,7 +2,6 @@
 
 To run locally, 
 
--- Git clone project to local
--- npm install 
--- npm start 
-
+Clone project on local<br><br>
+npm install<br><br>
+npm start 
