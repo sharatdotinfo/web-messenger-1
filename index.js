@@ -19,12 +19,18 @@ io.on('connection', function(socket){
 
   // send message
   socket.on('chat message', function(data){
-    io.emit('chat message', {msg: data, user: socket.username});
+    if (socket.username !== undefined) {
+      io.emit('chat message', {msg: data, user: socket.username});
+    }
+    else {
+      var randomuser = 'randomuser' + Math.floor(Math.random()*10000);
+      socket.username = randomuser;
+      io.emit('chat message', {msg: data, user: socket.username});
+    }
   });
 
   // New user
   socket.on('new user', function(data, callback){
-    // callback(true);
     socket.username = data;
     users.push(socket.username);
     updateUsernames();
