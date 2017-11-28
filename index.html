@@ -52,11 +52,15 @@
     </nav>
     <div class="container">
       <div class="row" style="padding-top: 25px;">
+        <div class="col-4 col-md-3">
+          <h3>Online users</h3>
+          <ul class="list-group" id="users"></ul>
+        </div>
 
-        <div class="col">
+        <div class="col-5 col-md-6">
           <ul id="messages"></ul>
         </div>
-        <div class="col-6 col-md-3 sidebar-offcanvas" id="sidebar" style="padding-top: 25px;">
+        <div class="col-3 col-md-3 sidebar-offcanvas" id="sidebar" style="padding-top: 25px;">
           <div class="list-group">
             <a href="#" class="list-group-item active">Bitcoin News</a>
             <a href="#" class="list-group-item">Ethereum News</a>
@@ -74,36 +78,44 @@
     <script>
       $(function () {
         var socket = io();
-        var nick = 'randomuser' + Math.floor(Math.random()*10000);
+        var $users = $('#users');
         $("#companyName").hide();
 
-        $('#headerForm').submit(function(){
-          socket.emit('chat message', nick + ' joined');
+        $('#footerForm').submit(function(e){
+          e.preventDefault();
+          socket.emit('chat message', $('#m').val());
           $('#m').val('');
-          return false;
         });
 
-        $('#footerForm').submit(function(){
-          socket.emit('chat message', nick + '> ' + $('#m').val());
-          $('#m').val('');
-          return false;
+        socket.on('chat message', function(data){
+          $('#messages').append('<li><strong>'+data.user+'</strong>: '+data.msg+'</li>');
         });
 
         $('#btn').click(function (){
             $("#headerForName").hide();
             $("#companyName").show();
-            nick = $("#n").val();
         });
 
-        socket.on('chat message', function(msg){
-          $('#messages').append($('<li>').text(msg));
+        $('#headerForm').submit(function(e){
+          e.preventDefault();
+          socket.emit('new user', $('#n').val());
+          $('#n').val('');
+        });
+
+        socket.on('get users', function(data){
+          var html = '';
+          for(i = 0; i < data.length; i++){
+            var x = data[i] + " joined";
+            html += '<li class="list-group-item">'+x+'</li>';
+          }
+          $users.html(html);
         });
       });
     </script>
     <footer class="navbar-inverse fixed-bottom">
       <div class="col-md-4 col-md-offset-4 mx-auto" >
         <form id="footerForm" class="form-inline" >
-          <input id="m" class="form-control mr-sm-2" type="search" style="width:80%;"
+          <input id="m" class="form-control mr-sm-2" type="search" "
                 placeholder="Enter text ..." aria-label="Search">
           <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Submit</button>
         </form>
