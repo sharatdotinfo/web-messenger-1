@@ -35,6 +35,7 @@ io.on('connection', function(socket){
     users.push(socket.username);
     updateUsernames();
   });
+  
   socket.on('url', function(msg){
     io.emit('url', msg);
   });

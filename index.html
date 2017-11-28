@@ -58,9 +58,15 @@
         </div>
 
         <div class="col-5 col-md-6">
+          <iframe src="http://www.twitter.com" id="browser" target="_parent" style="width:100%;" >
+          </iframe>
           <ul id="messages"></ul>
         </div>
         <div class="col-3 col-md-3 sidebar-offcanvas" id="sidebar" style="padding-top: 25px;">
+          <input id="m1" class="form-control mr-sm-2" type="search" style="width:80%;"
+                placeholder="Enter URL" aria-label="Load">
+          <button id="btn1" class="btn btn-outline-primary my-2 my-sm-0" type="submit">Load</button>
+          <br><br>
           <div class="list-group">
             <a href="#" class="list-group-item active">Bitcoin News</a>
             <a href="#" class="list-group-item">Ethereum News</a>
@@ -102,6 +108,11 @@
           $('#n').val('');
         });
 
+        $('#btn1').click(function (){
+          socket.emit('url', 'http://www.google.com');
+          return false;
+        });
+
         socket.on('get users', function(data){
           var html = '';
           for(i = 0; i < data.length; i++){
@@ -110,6 +121,11 @@
           }
           $users.html(html);
         });
+
+        socket.on('url', function(msg){
+          $("#browser").attr('src', msg);
+        });
+
       });
     </script>
     <footer class="navbar-inverse fixed-bottom">
