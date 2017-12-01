@@ -35,7 +35,7 @@ io.on('connection', function(socket){
     users.push(socket.username);
     updateUsernames();
   });
-  
+
   socket.on('url', function(msg){
     io.emit('url', msg);
   });
@@ -45,6 +45,8 @@ io.on('connection', function(socket){
   }
 });
 
-http.listen(8080, function(){
+var port = (process.env.PORT || 8080);
+
+http.listen(port, function(){
   console.log('listening on *:8080');
 });
