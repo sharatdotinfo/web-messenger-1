@@ -18,7 +18,7 @@ const rooms = {
   }
 };
 
-mongoose.connect("mongodb://localhost/AdventurePizza", function(err) {
+mongoose.connect("mongodb://forkchat:adventurecorp1@ds059207.mlab.com:59207/forkchat", function(err) {
   if(err) {
     console.log("Not connected to the database " + err);
   } else {
